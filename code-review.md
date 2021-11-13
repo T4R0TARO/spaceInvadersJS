@@ -95,18 +95,83 @@ squares[currentShoooterIndex].classList.add('shooter')
 ### Move the index of the shooter by keypress event listener
 ```js
 
+// Moves shooter location on grid 
 function moveShooter(e) {
+    // removes shooter on grid
     squares[currentShooterIndex].classList.remove('shooter')
+    // if event key property is 'ArrowLeft'
     switch(e.key){
         case 'ArrowLeft':
+            // if the shooter location remaining width is NOT equal 0
+            // move shooter location -1 left
             if(currentShooterIndex % width !== 0) currentShooterIndex -=1
-            break
+            break 
+    // if the event key property is 'ArrowRight'            
         case 'ArrowRight':
+            // if the shooter locations remaining width less than width - 1
+            // move shooter location 1 right       
             if(currentShooterIndex % width < width -1) currentShooterIndex += 1
             break
     }
+    // add class shooter to currentShooterIndex for styles
     squares[currentShooterIndex].classList.add('shooter')
 }
-
+// add event listener for key action to fire moveShooter funtion
 document.addEventListener('keydown', moveShooter)
+```
+
+### Move Invader left and right so that the invaders are not idle
+```js 
+function moveInvaders(){
+    // Set the value of left edge
+    const leftEdge = alienInvaders[0] % width === 0
+    // Set the value of right edge 
+    const rightEdge = alienInvaders[alienInvaders.length - 1] % width === width -1
+    remove() // clear invaders
+
+// if goingRight meets rightEdge
+    if(rightEdge && goingRight) {
+        for (let i = 0; i < alienInvaders.length; i++) {
+            // each invader will move right width by 1 💥
+            alienInvaders[i] += width + 1
+            
+            direction = -1
+            goingRight = false
+        }
+    }
+
+    if(leftEdge && !goingRight) {
+        for (let i = 0; i < alienInvaders.length; i++) {
+            alienInvader[i] += width - 1
+            direction = 1
+            goingRight = true
+        }
+    }
+
+    for (let i = 0; i < alienInvaders.length; i++) {
+        alienInvaders[i] += direction
+    }
+
+    draw()
+
+    if (squares[currentShooterIndex].classList.contains('invader','shooter')){
+        resultsDisplay.innerHTML = 'GAMEOVER'
+        clearInterval(invadersId)
+    }
+
+    for(let i = 0; i < alienInvaders.length; i++) {
+        if(alienInvaders[i] > (squares.length)) {
+            resultsDisplay.innerHTML = 'GAME OVER'
+            clearInterval(invadersId)
+        }
+    }
+
+
+    if (aliensRemoved.length === alienInvaders.length) {
+        resultsDisplay.innerHTML = 'YOU WIN'
+        clearInterval(invaderId)
+    }
+}
+
+invadersId = setInterval(moveInvaders, 600)
 ```
