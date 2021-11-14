@@ -133,6 +133,7 @@ function moveInvaders(){
     if(rightEdge && goingRight) {
         for (let i = 0; i < alienInvaders.length; i++) {
             // each invader will move right width by 1 💥
+            // Bookmark
             alienInvaders[i] += width + 1
             
             direction = -1
