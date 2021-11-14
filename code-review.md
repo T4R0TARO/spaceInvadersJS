@@ -132,34 +132,44 @@ function moveInvaders(){
 // if goingRight meets rightEdge
     if(rightEdge && goingRight) {
         for (let i = 0; i < alienInvaders.length; i++) {
-            // each invader will move right width by 1 💥
-            // Bookmark
+            // each invader will move right width by 1 space
             alienInvaders[i] += width + 1
-            
+            //  move left on the grid       
             direction = -1
+            // stops invaders from going right when rightEdge is met 
             goingRight = false
         }
     }
 
+// if leftEdge is met with and invaders are going LEFT
     if(leftEdge && !goingRight) {
         for (let i = 0; i < alienInvaders.length; i++) {
+            // each invader will move the width of the grid
             alienInvader[i] += width - 1
+            // moves right  on the grid
             direction = 1
+            // stop ivaders from going left when leftEdge in met 
             goingRight = true
         }
     }
 
+// continously move the invaders
     for (let i = 0; i < alienInvaders.length; i++) {
         alienInvaders[i] += direction
     }
 
+// draw invaders on grid 
     draw()
 
+// if a gird square contains both invader and shooter
     if (squares[currentShooterIndex].classList.contains('invader','shooter')){
+        // display HTML GAME OVER
         resultsDisplay.innerHTML = 'GAMEOVER'
+        // clearInterval of Invaders
         clearInterval(invadersId)
     }
 
+// if invader completes the length of the square end game
     for(let i = 0; i < alienInvaders.length; i++) {
         if(alienInvaders[i] > (squares.length)) {
             resultsDisplay.innerHTML = 'GAME OVER'
@@ -167,12 +177,15 @@ function moveInvaders(){
         }
     }
 
-
+// if the amount of invaders removed equals the amount of invaders 
     if (aliensRemoved.length === alienInvaders.length) {
+        // the player wins
         resultsDisplay.innerHTML = 'YOU WIN'
+        // clear invader intervals 
         clearInterval(invaderId)
     }
 }
 
+// invaderId start inveterval and move invaders
 invadersId = setInterval(moveInvaders, 600)
 ```
